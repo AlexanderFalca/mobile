@@ -1,9 +1,10 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Ionicons} from '@expo/vector-icons';
 
 import TeacherList from '../pages/TeacherList';
 import Favorites from '../pages/Favorites';
+
+import {Ionicons} from '@expo/vector-icons';
 
 const {Navigator,Screen} = createBottomTabNavigator();
 
@@ -38,9 +39,9 @@ function StudyTabs(){
         }}
         >
             <Screen 
-            name="TeacherList" 
-            component={TeacherList}
-            options={{
+                name="TeacherList" 
+                component={TeacherList}
+                options={{
                 tabBarLabel: 'Proffys',
                 tabBarIcon: ({color,size,focused}) => {
                     return (
@@ -54,9 +55,9 @@ function StudyTabs(){
             }}
              />
             <Screen 
-            name="Favorites" 
-            component={Favorites}
-            options={{
+                name="Favorites" 
+                component={Favorites}
+                options={{
                 tabBarLabel: 'Favoritos',
                 tabBarIcon: ({color,size, focused}) => {
                     return (

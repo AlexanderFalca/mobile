@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {View, ScrollView} from 'react-native';
-import { useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
@@ -28,6 +28,7 @@ function Favorites(){
       loadFavorites();
     }, [])
   )
+  
 
     return (
         <View style={styles.container}>
@@ -36,7 +37,7 @@ function Favorites(){
 
             <ScrollView
             style={styles.teacherList}
-            contentContainerStyle={{
+                contentContainerStyle={{
                 paddingHorizontal: 16,
                 paddingBottom: 16,
             }}

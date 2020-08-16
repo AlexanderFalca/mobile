@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import {View, Text} from 'react-native';
-import { ScrollView, TextInput, BorderlessButton, RectButton } from 'react-native-gesture-handler';
-import AsyncStorege from '@react-native-community/async-storage'; 
-import {Feather} from '@expo/vector-icons';
+import React, { useState } from 'react';
+import {View, Text, Picker, Platform} from 'react-native';
+import { ScrollView, BorderlessButton, RectButton, TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage'; 
+import DatePicker from '@react-native-community/datetimepicker';
 
 import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
 
 import api from '../../services/api';
 
+import {Feather} from '@expo/vector-icons';
 import styles from './styles';
 
 function TeacherList(){
+    
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const [favorites, setFavorites] = useState<number[]>([]);
     const [teachers, setTeachers] = useState([]);
 
   const [subject, setSubject] = useState('');
   const [week_day, setWeekDay] = useState('');
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState(new Date());
+  const [show, setShow] = useState(false);
 
   function loadFavorites(){
-    AsyncStorege.getItem('favorites').then(response => {
+
+    AsyncStorage.getItem('favorites').then(response => {
         if(response){
             const favoritedTeachers = JSON.parse(response);
             const favoritedTeachersIds = favoritedTeachers.map((teacher: Teacher) =>{
@@ -31,11 +35,15 @@ function TeacherList(){
         }
     });
   }
-  
 
     function handleToggleFiltersVisible() {
         setIsFilterVisible(!isFilterVisible)
     }
+
+    function showTime(){
+        setShow(!show)
+    }
+
     async function handleFiltersSubmit(){
         loadFavorites();
 
@@ -60,37 +68,76 @@ function TeacherList(){
                 <Feather name="filter" size={20} color="#FFF" />
             </BorderlessButton>)} 
             >
-                {isFilterVisible && (<View style={styles.searchForm}>
+                {isFilterVisible && (
+                    <View style={styles.searchForm}>
+                    
                     <Text style={styles.label}>Matéria</Text>
-                    <TextInput
-                    style={styles.input}
-                    value={subject}
-                    onChangeText={text => setSubject(text)}
-                    placeholder="Qual é a matéria?" 
-                    placeholderTextColor="#c1bccc"
-                    />
+                    <View  style={styles.inputPicker} >
+                    <Picker
+                    selectedValue={subject}
+                    onValueChange={(itemValue, itemIndex) => setSubject(itemValue)}
+                    >
+                        
+                        <Picker.Item color="#c1bccc" label="Qual é a matéria?" value=" " />
+                        <Picker.Item label="Português"  value="Portugus" />
+                        <Picker.Item label="Matemática" value="Matemática" />
+                        <Picker.Item label="Geografia"  value="Geografia" />
+                        <Picker.Item label="História"   value="HistÓria" />
+                        <Picker.Item label="Biologia"   value="Biologia" />
+                        <Picker.Item label="Artes"      value="Artes" />
+                        <Picker.Item label="Pedagogia"  value="Pedagogia" />
+
+                    </Picker>
+                    </View>
                     
                     <View style={styles.inputGroup}>
+
                         <View style={styles.inputBlock}>
-                        <Text style={styles.label}>Dia da semana</Text>
-                    <TextInput
-                    style={styles.input}
-                    value={week_day}
-                    onChangeText={text => setWeekDay(text)}
-                    placeholder="Qual é o dia?"
-                    placeholderTextColor="#c1bccc" 
-                    />
+
+                    <Text style={styles.label}>Dia da semana</Text>
+                    <View  style={styles.inputPicker} >
+                    <Picker
+                    selectedValue={week_day}
+                    onValueChange={(itemValue, itemIndex) => setWeekDay(itemValue)}
+                    >
+                        
+                        <Picker.Item color="#c1bccc" label="Dia?" value=" " />
+                        <Picker.Item label="Domingo"       value="0" />
+                        <Picker.Item label="Segunda-feira" value="1" />
+                        <Picker.Item label="Terça-feira"   value="2" />
+                        <Picker.Item label="Quarta-feira"  value="3" />
+                        <Picker.Item label="Quinta-feira"  value="4" />
+                        <Picker.Item label="Sexta-feira"   value="5" />
+                        <Picker.Item label="Sábado"        value="6" />
+
+                    </Picker>
+                    </View>
                         </View>
 
                         <View style={styles.inputBlock}>
+                        
                         <Text style={styles.label}>Horário</Text>
-                    <TextInput
-                    style={styles.input}
-                    value={time}
-                    onChangeText={text => setTime(text)}
-                    placeholder="Qual horário?"
-                    placeholderTextColor="#c1bccc" 
-                    />
+                        <TouchableOpacity style={styles.inputTime} onPress={showTime}>
+                            <Text>{
+                            (time.getHours()<10?'0':'') + time.getHours()
+                            }:{
+                            (time.getMinutes()<10?'0':'') + time.getMinutes()
+                            }</Text>       
+                        </TouchableOpacity> 
+                        {show && (
+                        <DatePicker
+                             mode="time"
+                             value={time}
+                            is24Hour={true}
+                            display="clock"
+                            onChange={(event, selectedTime) => {
+                                const currentTime = selectedTime || new Date();
+                                setTime(currentTime);
+                                setShow(Platform.OS === 'ios' ? true : false);
+                                }
+                            }
+                        />
+                        )}
                         </View>
                     </View>
 

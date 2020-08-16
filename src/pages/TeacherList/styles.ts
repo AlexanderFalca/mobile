@@ -21,6 +21,7 @@ label: {
 inputGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
 },
 
 inputBlock: {
@@ -28,13 +29,39 @@ inputBlock: {
 },
 
 input: {
-    height: 48,
+    height: 52,
     backgroundColor: '#FFF',
     borderRadius: 8,
     justifyContent: 'center',
     paddingHorizontal: 16,
     marginTop: 4,
     marginBottom: 8,
+},
+
+inputPicker: {
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    borderRadius: 8, 
+    borderWidth: 1, 
+    borderColor: '#bdc3c7', 
+    overflow: 'hidden',
+    marginTop: 4,
+    marginBottom: 8,
+},
+
+inputTime: {
+    backgroundColor: '#FFF',
+    height: 52,
+    borderRadius: 8,
+    justifyContent: 'center',
+    marginTop: 4, 
+    marginBottom: 8,
+    paddingHorizontal: 10,
+},
+inputTimeText: {
+    color: '#d4c2ff',
+    fontFamily: 'Poppins_400Regular'
+
 },
 
 submitButton: {
